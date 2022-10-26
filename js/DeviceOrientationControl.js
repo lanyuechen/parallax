@@ -23,26 +23,25 @@ export default class DeviceOrientationControl {
     quaternion.multiply(q1);
     quaternion.multiply(q0.setFromAxisAngle(zee, -orient));
 
-    return quaternion.inverse();
+    return quaternion.invert();
   }
 
   onDeviceOrientationChangeEvent = (event) => {
     this.deviceOrientation = event;
-
-    const alpha = event.alpha ? THREE.Math.degToRad(event.alpha) : 0;
-    const beta = event.beta ? THREE.Math.degToRad(event.beta) : 0;
-    const gamma = event.gamma ? THREE.Math.degToRad(event.gamma) : 0;
-    const orient = event.screenOrientation ? THREE.Math.degToRad(event.screenOrientation) : 0;
+    const alpha = event.alpha ? THREE.MathUtils.degToRad(event.alpha) : 0;
+    const beta = event.beta ? THREE.MathUtils.degToRad(event.beta) : 0;
+    const gamma = event.gamma ? THREE.MathUtils.degToRad(event.gamma) : 0;
+    const orient = event.screenOrientation ? THREE.MathUtils.degToRad(event.screenOrientation) : 0;
 
     if (!this.originDeviceFace) {
-      this.originDeviceFace = getDeviceFce(alpha, beta, gamma, orient).inverse();
-    } else {
-      const quaternion = DeviceOrientationControl.getDeviceFce(alpha, beta, gamma, orient);
-      this.DeviceFace = new THREE.Vector3(0, 0, 1).applyQuaternion(
-        this.originDeviceFace
-      );
-      this.DeviceFace.applyQuaternion(quaternion);
+      this.originDeviceFace = DeviceOrientationControl.getDeviceFce(alpha, beta, gamma, orient).invert();
     }
+    
+    const quaternion = DeviceOrientationControl.getDeviceFce(alpha, beta, gamma, orient);
+    this.DeviceFace = new THREE.Vector3(0, 0, 1).applyQuaternion(this.originDeviceFace);
+    this.DeviceFace.applyQuaternion(quaternion);
+
+    log('onDeviceOrientationChangeEvent' + JSON.stringify(this.originDeviceFace, this.DeviceFace));
   }
 
   onScreenOrientationChangeEvent = () => {
@@ -51,6 +50,7 @@ export default class DeviceOrientationControl {
 
   init() {
     this.close();
+    log('init DeviceOrientationControl', typeof DeviceOrientationEvent.requestPermission);
 
     this.onScreenOrientationChangeEvent();
     if (typeof DeviceOrientationEvent.requestPermission !== 'function') {
@@ -70,12 +70,13 @@ export default class DeviceOrientationControl {
   }
 
   close() {
+    this.enable = false;
     window.removeEventListener('orientationchange', this.onScreenOrientationChangeEvent, false);
     window.removeEventListener('deviceorientation', this.onDeviceOrientationChangeEvent, false);
   }
 
   deviceOrientationUpdate() {
-    if (!this.enable || this.moveFlag) {
+    if (!this.enable) {
       return;
     }
 

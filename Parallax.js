@@ -49,7 +49,6 @@ export default class {
 
     this.camera = new THREE.ParallaxCamera(0, 0, DEPTH, WIDTH, HEIGHT);
     // this.camera.cameraControl.init();
-    this.camera.deviceOrientationControl.init();
 
     const box = createBox(WIDTH, HEIGHT, DEPTH);
     this.scene.add(box);
@@ -76,7 +75,7 @@ export default class {
     pointLight.castShadow = true;
     this.scene.add( pointLight );
     
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setSize(WIDTH, HEIGHT);
     this.renderer.shadowMap.enabled = true;
     document.body.appendChild( this.renderer.domElement );
