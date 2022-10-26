@@ -48,7 +48,7 @@ export default class {
     this.scene = new THREE.Scene();
 
     this.camera = new THREE.ParallaxCamera(0, 0, DEPTH, WIDTH, HEIGHT);
-    this.camera.cameraControl.init();
+    // this.camera.cameraControl.init();
     this.camera.deviceOrientationControl.init();
 
     const box = createBox(WIDTH, HEIGHT, DEPTH);
