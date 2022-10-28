@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Parallax</title>
   <style>
     body {
@@ -12,10 +12,11 @@
     }
     #toolbar {
       position: absolute;
-      bottom: 200px;
+      bottom: 0;
       overflow: hidden;
     }
     #log {
+      display: none;
       margin: 0;
       height: 200px;
       overflow: auto;
@@ -44,13 +45,11 @@
     const parallax = new Parallax(window.innerWidth, window.innerHeight, 300);
 
     document.getElementById('touch').addEventListener('click', () => {
-      log('start touch');
       parallax.camera.cameraControl.init();
       parallax.camera.deviceOrientationControl.close();
     });
 
     document.getElementById('orientation').addEventListener('click', () => {
-      log('start orientation');
       parallax.camera.cameraControl.close();
       parallax.camera.deviceOrientationControl.init();
     });

@@ -40,8 +40,6 @@ export default class DeviceOrientationControl {
     const quaternion = DeviceOrientationControl.getDeviceFce(alpha, beta, gamma, orient);
     this.DeviceFace = new THREE.Vector3(0, 0, 1).applyQuaternion(this.originDeviceFace);
     this.DeviceFace.applyQuaternion(quaternion);
-
-    log('onDeviceOrientationChangeEvent' + JSON.stringify(this.originDeviceFace, this.DeviceFace));
   }
 
   onScreenOrientationChangeEvent = () => {
@@ -50,7 +48,6 @@ export default class DeviceOrientationControl {
 
   init() {
     this.close();
-    log('init DeviceOrientationControl', typeof DeviceOrientationEvent.requestPermission);
 
     this.onScreenOrientationChangeEvent();
     if (typeof DeviceOrientationEvent.requestPermission !== 'function') {
