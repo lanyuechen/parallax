@@ -1,3 +1,6 @@
+import { GLTFLoader } from './addons/loaders/GLTFLoader.js';
+import { DRACOLoader } from './addons/loaders/DRACOLoader.js';
+import { RoomEnvironment } from './addons/environments/RoomEnvironment.js';
 
 const createBox = (width, height, depth) => {
   const material = new THREE.MeshPhongMaterial();
@@ -40,42 +43,54 @@ const createBox = (width, height, depth) => {
   return group;
 }
 
+const loadModel = () => {
+  const dracoLoader = new DRACOLoader();
+  dracoLoader.setDecoderPath( './addons/loaders/draco/gltf/' );
+
+  const loader = new GLTFLoader();
+  loader.setDRACOLoader( dracoLoader );
+  return new Promise((resolve, reject) => {
+    loader.load('./models/gltf/LittlestTokyo.glb', (gltf) => {
+      resolve(gltf);
+    }, undefined, (err) => {
+      reject(err);
+    });
+  });
+}
+
 export default class {
   constructor(width, height, depth) {
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setPixelRatio( window.devicePixelRatio );
+    this.renderer.setSize(width, height);
+    this.renderer.shadowMap.enabled = true;
+    this.renderer.outputEncoding = THREE.sRGBEncoding;
+    document.body.appendChild( this.renderer.domElement );
+
+    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+
     this.scene = new THREE.Scene();
+    this.scene.background = new THREE.Color( 0xbfe3dd );
+		this.scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
+
+    this.clock = new THREE.Clock();
 
     this.camera = new THREE.ParallaxCamera(0, 0, depth, width, height);
     // this.camera.cameraControl.init();
 
-    const box = createBox(width, height, depth);
-    this.scene.add(box);
+    // const box = createBox(width, height, depth);
+    // this.scene.add(box);
 
-    const geometry = new THREE.BoxGeometry( 40, 30, 50 );
-    const cubeMaterial = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
-    const cube = new THREE.Mesh( geometry, cubeMaterial );
-    cube.position.set(0, 0, -depth / 2 + 15);
-    cube.castShadow = true;
-    this.scene.add(cube);
-
-    const sphereGeometry = new THREE.SphereGeometry( 10, 32, 16 );
-    const sphereMaterial = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
-    const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
-    sphere.position.set(50, 10, -depth / 2 + 10);
-    sphere.castShadow = true;
-    this.scene.add( sphere );
-
-    const light = new THREE.AmbientLight( 0x404040 ); // soft white light
-    this.scene.add( light );
-
-    const pointLight = new THREE.PointLight( 0x606060, 2, 500 );
-    pointLight.position.set( 0, 0, 0 );
-    pointLight.castShadow = true;
-    this.scene.add( pointLight );
-    
-    this.renderer = new THREE.WebGLRenderer({ antialias: true });
-    this.renderer.setSize(width, height);
-    this.renderer.shadowMap.enabled = true;
-    document.body.appendChild( this.renderer.domElement );
+    loadModel().then((gltf) => {
+      const model = gltf.scene;
+      model.position.set( 0, 0, 0 );
+      model.rotateY(Math.PI / 4);
+      model.scale.set( 0.5, 0.5, 0.5 );
+      this.scene.add( model );
+  
+      this.mixer = new THREE.AnimationMixer( model );
+      this.mixer.clipAction( gltf.animations[ 0 ] ).play();
+    });
 
     this.animate();
   }
@@ -85,6 +100,11 @@ export default class {
       this.animate();
     });
     this.camera.updateProjectionMatrix();
+
+    if (this.mixer) {
+      const delta = this.clock.getDelta();
+      this.mixer.update(delta);
+    }
   
     this.renderer.render(this.scene, this.camera);
   }
