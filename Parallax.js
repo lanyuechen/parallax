@@ -1,6 +1,3 @@
-const WIDTH = 300;
-const HEIGHT = 200;
-const DEPTH = 300;
 
 const createBox = (width, height, depth) => {
   const material = new THREE.MeshPhongMaterial();
@@ -44,26 +41,26 @@ const createBox = (width, height, depth) => {
 }
 
 export default class {
-  constructor() {
+  constructor(width, height, depth) {
     this.scene = new THREE.Scene();
 
-    this.camera = new THREE.ParallaxCamera(0, 0, DEPTH, WIDTH, HEIGHT);
+    this.camera = new THREE.ParallaxCamera(0, 0, depth, width, height);
     // this.camera.cameraControl.init();
 
-    const box = createBox(WIDTH, HEIGHT, DEPTH);
+    const box = createBox(width, height, depth);
     this.scene.add(box);
 
     const geometry = new THREE.BoxGeometry( 40, 30, 50 );
-    const cubeMaterial = new THREE.MeshPhongMaterial({ color: '#ffd928'});
+    const cubeMaterial = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
     const cube = new THREE.Mesh( geometry, cubeMaterial );
-    cube.position.set(0, 0, -DEPTH / 2 + 15);
+    cube.position.set(0, 0, -depth / 2 + 15);
     cube.castShadow = true;
     this.scene.add(cube);
 
     const sphereGeometry = new THREE.SphereGeometry( 10, 32, 16 );
     const sphereMaterial = new THREE.MeshPhongMaterial( { color: 0xffff00 } );
     const sphere = new THREE.Mesh( sphereGeometry, sphereMaterial );
-    sphere.position.set(50, 10, -DEPTH / 2 + 10);
+    sphere.position.set(50, 10, -depth / 2 + 10);
     sphere.castShadow = true;
     this.scene.add( sphere );
 
@@ -71,12 +68,12 @@ export default class {
     this.scene.add( light );
 
     const pointLight = new THREE.PointLight( 0x606060, 2, 500 );
-    pointLight.position.set( WIDTH / 4, HEIGHT / 4, DEPTH / 2 );
+    pointLight.position.set( 0, 0, 0 );
     pointLight.castShadow = true;
     this.scene.add( pointLight );
     
-    this.renderer = new THREE.WebGLRenderer({antialias: true});
-    this.renderer.setSize(WIDTH, HEIGHT);
+    this.renderer = new THREE.WebGLRenderer({ antialias: true });
+    this.renderer.setSize(width, height);
     this.renderer.shadowMap.enabled = true;
     document.body.appendChild( this.renderer.domElement );
 
@@ -89,6 +86,6 @@ export default class {
     });
     this.camera.updateProjectionMatrix();
   
-    this.renderer.render( this.scene, this.camera );
+    this.renderer.render(this.scene, this.camera);
   }
 }
