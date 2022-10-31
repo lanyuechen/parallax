@@ -1,6 +1,10 @@
-import { GLTFLoader } from './addons/loaders/GLTFLoader.js';
-import { DRACOLoader } from './addons/loaders/DRACOLoader.js';
-import { RoomEnvironment } from './addons/environments/RoomEnvironment.js';
+import * as THREE from 'three';
+
+import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader';
+import { DRACOLoader } from 'three/examples/jsm/loaders/DRACOLoader';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment';
+
+import ParallaxCamera from './ParallaxCamera';
 
 const createBox = (width, height, depth) => {
   const material = new THREE.MeshPhongMaterial();
@@ -45,12 +49,12 @@ const createBox = (width, height, depth) => {
 
 const loadModel = () => {
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath( './addons/loaders/draco/gltf/' );
+  dracoLoader.setDecoderPath( '/loaders/draco/gltf/' );
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader( dracoLoader );
   return new Promise((resolve, reject) => {
-    loader.load('./models/gltf/LittlestTokyo.glb', (gltf) => {
+    loader.load('/models/gltf/LittlestTokyo.glb', (gltf) => {
       resolve(gltf);
     }, undefined, (err) => {
       reject(err);
@@ -75,7 +79,7 @@ export default class {
 
     this.clock = new THREE.Clock();
 
-    this.camera = new THREE.ParallaxCamera(0, 0, depth, width, height);
+    this.camera = new ParallaxCamera(0, 0, depth, width, height);
     // this.camera.cameraControl.init();
 
     // const box = createBox(width, height, depth);

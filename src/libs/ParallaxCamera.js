@@ -1,7 +1,9 @@
-import CameraControl from './CameraControl.js';
-import DeviceOrientationControl from './DeviceOrientationControl.js';
+import * as THREE from 'three';
 
-THREE.ParallaxCamera = class extends THREE.PerspectiveCamera {
+import CameraControl from './CameraControl';
+import DeviceOrientationControl from './DeviceOrientationControl';
+
+export default class extends THREE.PerspectiveCamera {
   type = "ParallaxCamera";
 
   constructor(xAxis, yAxis, zAxis, width, height) {

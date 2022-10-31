@@ -1,58 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no">
-  <title>Parallax</title>
-  <style>
-    body {
-      padding: 0;
-      margin: 0;
-    }
-    #toolbar {
-      position: absolute;
-      bottom: 0;
-      overflow: hidden;
-    }
-    #log {
-      display: none;
-      margin: 0;
-      height: 200px;
-      overflow: auto;
-      position: absolute;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      background: rgba(0, 0, 0, 0.2);
-      color: #fff;
-    }
-  </style>
-</head>
-<body>
-  <div id="toolbar">
-    <button id="touch">拖动</button>
-    <button id="orientation">陀螺仪</button>
-  </div>
-  <ul id="log"></ul>
-  
-  <script src="lib/three.js"></script>
-  <script src="js/ParallaxCamera.js" type="module"></script>
-  <script src="log.js" type="module"></script>
-
-  <script type="module">
-    import Parallax from './Parallax.js';
-    const parallax = new Parallax(window.innerWidth, window.innerHeight, 1000);
-
-    document.getElementById('touch').addEventListener('click', () => {
-      parallax.camera.cameraControl.init();
-      parallax.camera.deviceOrientationControl.close();
-    });
-
-    document.getElementById('orientation').addEventListener('click', () => {
-      parallax.camera.cameraControl.close();
-      parallax.camera.deviceOrientationControl.init();
-    });
-  </script>
-</body>
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+    <title>Parallax</title>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
 </html>

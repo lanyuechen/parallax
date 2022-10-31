@@ -1,4 +1,4 @@
-window.log = (...params) => {
+export const log = (...params) => {
   const logBox = document.getElementById('log');
 
   const li = document.createElement('li');

@@ -1,3 +1,5 @@
+import * as THREE from 'three';
+
 export default class CameraControl {
   constructor(camera) {
     this.camera = camera;
