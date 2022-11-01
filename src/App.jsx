@@ -1,5 +1,4 @@
 import ParallaxView from '@/components/ParallaxView';
-import Tracking from '@/components/Tracking';
 
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
@@ -21,7 +20,6 @@ export default () => {
       {/* <button onClick={setTouch}>拖动</button>
       <button onClick={setOrientation}>陀螺仪</button> */}
       <ParallaxView width={WIDTH} height={HEIGHT} depth={DEPTH} />
-      {/* <Tracking /> */}
     </div>
   );
 }
