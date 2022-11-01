@@ -19,7 +19,7 @@ export default class extends THREE.PerspectiveCamera {
     this.oz = zAxis;
 
     this.near = 0.1;
-    this.far = 1000;
+    this.far = 10000;
 
     this.position.set(xAxis, yAxis, zAxis);
     this.ori_pos = new THREE.Vector3(xAxis, yAxis, zAxis);
@@ -27,15 +27,15 @@ export default class extends THREE.PerspectiveCamera {
 
     this.enabled = true;
 
-		this.deviceOrientationControl = new DeviceOrientationControl(this);
-		this.cameraControl = new CameraControl(this);
+		// this.deviceOrientationControl = new DeviceOrientationControl(this);
+		// this.cameraControl = new CameraControl(this);
 
     this.updateProjectionMatrix();
   }
 
   updateProjectionMatrix() {
     if (this.enabled) {
-      if (this.deviceOrientationControl.enable) {
+      if (this.deviceOrientationControl?.enable) {
         this.deviceOrientationControl.deviceOrientationUpdate();
       }
 

@@ -49,7 +49,7 @@ const createBox = (width, height, depth) => {
 
 const loadModel = () => {
   const dracoLoader = new DRACOLoader();
-  dracoLoader.setDecoderPath( '/loaders/draco/gltf/' );
+  dracoLoader.setDecoderPath('/loaders/draco/gltf/');
 
   const loader = new GLTFLoader();
   loader.setDRACOLoader( dracoLoader );
@@ -69,32 +69,39 @@ export default class {
     this.renderer.setSize(width, height);
     this.renderer.shadowMap.enabled = true;
     this.renderer.outputEncoding = THREE.sRGBEncoding;
-    document.body.appendChild( this.renderer.domElement );
+    // document.body.appendChild( this.renderer.domElement );
 
-    const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
+    // const pmremGenerator = new THREE.PMREMGenerator( this.renderer );
 
     this.scene = new THREE.Scene();
-    this.scene.background = new THREE.Color( 0xbfe3dd );
-		this.scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
+    this.scene.background = new THREE.Color( 0xffffff );
+		// this.scene.environment = pmremGenerator.fromScene( new RoomEnvironment(), 0.04 ).texture;
 
-    this.clock = new THREE.Clock();
+    const light = new THREE.AmbientLight( 0x404040 ); // soft white light
+    this.scene.add(light);
+
+    const pointLight = new THREE.PointLight( 0x404040, 2, depth );
+    light.position.set( 0, 0, depth / 2 );
+    this.scene.add( pointLight );
+
+    // this.clock = new THREE.Clock();
 
     this.camera = new ParallaxCamera(0, 0, depth, width, height);
     // this.camera.cameraControl.init();
 
-    // const box = createBox(width, height, depth);
-    // this.scene.add(box);
+    const box = createBox(width, height, depth);
+    this.scene.add(box);
 
-    loadModel().then((gltf) => {
-      const model = gltf.scene;
-      model.position.set( 0, 0, 0 );
-      model.rotateY(Math.PI / 4);
-      model.scale.set( 0.5, 0.5, 0.5 );
-      this.scene.add( model );
+    // loadModel().then((gltf) => {
+    //   const model = gltf.scene;
+    //   model.position.set( 0, 0, 0 );
+    //   model.rotateY(Math.PI / 4);
+    //   model.scale.set( 0.5, 0.5, 0.5 );
+    //   this.scene.add( model );
   
-      this.mixer = new THREE.AnimationMixer( model );
-      this.mixer.clipAction( gltf.animations[ 0 ] ).play();
-    });
+    //   this.mixer = new THREE.AnimationMixer( model );
+    //   this.mixer.clipAction( gltf.animations[ 0 ] ).play();
+    // });
 
     this.animate();
   }
@@ -103,12 +110,13 @@ export default class {
     requestAnimationFrame(() => {
       this.animate();
     });
+    
     this.camera.updateProjectionMatrix();
 
-    if (this.mixer) {
-      const delta = this.clock.getDelta();
-      this.mixer.update(delta);
-    }
+    // if (this.mixer) {
+    //   const delta = this.clock.getDelta();
+    //   this.mixer.update(delta);
+    // }
   
     this.renderer.render(this.scene, this.camera);
   }

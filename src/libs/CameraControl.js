@@ -1,10 +1,10 @@
 import * as THREE from 'three';
 
 export default class CameraControl {
-  constructor(camera) {
+  constructor(camera, domElement) {
     this.camera = camera;
 
-    this.domElement = document.body;
+    this.domElement = domElement;
     this.enable = false;
     this.moveFlag = false;
 
