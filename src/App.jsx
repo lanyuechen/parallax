@@ -17,7 +17,7 @@ export default () => {
 
   return (
     <div>
-      {/* <button onClick={setTouch}>拖动</button>
+      {/* <button onClick={setTouch}> 拖动</button>
       <button onClick={setOrientation}>陀螺仪</button> */}
       <ParallaxView width={WIDTH} height={HEIGHT} depth={DEPTH} />
     </div>
