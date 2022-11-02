@@ -1,24 +1,28 @@
-import { useEffect, useRef } from 'react';
+import { useMemo } from 'react';
+import { Canvas, extend } from '@react-three/fiber';
 
-import Parallax from './Parallax';
+import ParallaxCamera from './Parallax/ParallaxCamera';
 import CameraControl from './Parallax/CameraControl';
 
-export default (props) => {
-  const { width, height, depth } = props;
-  const ref = useRef();
+import CameraView from './CameraView';
 
-  useEffect(() => {
-    if (ref.current) {
-      const parallax = new Parallax(width, height, depth);
-      ref.current.appendChild(parallax.renderer.domElement);
-      parallax.camera.cameraControl = new CameraControl(parallax.camera, ref.current);
-      parallax.camera.cameraControl.init();
-    }
-  }, []);
+extend({ ParallaxCamera });
+
+export default (props) => {
+  const { width, height, depth, children } = props;
+
+  const camera = useMemo(() => {
+    const parallaxCamera = new ParallaxCamera(0, 0, depth, width, height);
+    parallaxCamera.cameraControl = new CameraControl(parallaxCamera);
+    parallaxCamera.cameraControl.init();
+    return parallaxCamera;
+  });
 
   return (
-    <div ref={ref}>
-
-    </div>
+    <Canvas camera={camera}>
+      <CameraView>
+        {children}
+      </CameraView>
+    </Canvas>
   );
 }

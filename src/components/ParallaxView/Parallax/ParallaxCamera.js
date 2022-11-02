@@ -1,8 +1,5 @@
 import * as THREE from 'three';
 
-import CameraControl from './CameraControl';
-import DeviceOrientationControl from './DeviceOrientationControl';
-
 export default class extends THREE.PerspectiveCamera {
   type = "ParallaxCamera";
 

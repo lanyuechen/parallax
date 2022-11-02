@@ -4,7 +4,7 @@ export default class CameraControl {
   constructor(camera, domElement) {
     this.camera = camera;
 
-    this.domElement = domElement;
+    this.domElement = domElement || document.body;
     this.enable = false;
     this.moveFlag = false;
 

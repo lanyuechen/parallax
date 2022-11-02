@@ -1,25 +1,16 @@
 import ParallaxView from '@/components/ParallaxView';
+import Box from '@/components/Box';
 
 const WIDTH = window.innerWidth;
 const HEIGHT = window.innerHeight;
 const DEPTH = 1000;
 
 export default () => {
-  // const setTouch = () => {
-  //   parallax.camera.cameraControl.init();
-  //   parallax.camera.deviceOrientationControl.close();
-  // }
-
-  // const setOrientation = () => {
-  //   parallax.camera.cameraControl.init();
-  //   parallax.camera.deviceOrientationControl.close();
-  // }
-
   return (
-    <div>
-      {/* <button onClick={setTouch}> 拖动</button>
-      <button onClick={setOrientation}>陀螺仪</button> */}
-      <ParallaxView width={WIDTH} height={HEIGHT} depth={DEPTH} />
-    </div>
+    <ParallaxView width={WIDTH} height={HEIGHT} depth={DEPTH}>
+      <Box width={WIDTH} height={HEIGHT} depth={DEPTH} />
+      <ambientLight color={0x404040} />
+      <pointLight color={0x404040} intensity={2} distance={DEPTH} />
+    </ParallaxView>
   );
 }
