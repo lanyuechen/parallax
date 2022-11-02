@@ -38,13 +38,13 @@ export default class extends THREE.PerspectiveCamera {
       if (this.deviceOrientationControl?.enable) {
         this.deviceOrientationControl.deviceOrientationUpdate();
       }
-
+  
       const left = this.ori_pos.x - this.position.x + this.left;
       const right = this.ori_pos.x - this.position.x + this.right;
       const top = this.ori_pos.y - this.position.y + this.top;
       const bottom = this.ori_pos.y - this.position.y + this.bottom;
       const zoom = this.near / (this.position.z - this.ori_pos.z + this.oz);
-
+  
       this.projectionMatrix.makePerspective(
         left * zoom,
         right * zoom,
@@ -56,4 +56,4 @@ export default class extends THREE.PerspectiveCamera {
       this.projectionMatrixInverse.copy(this.projectionMatrix).invert();
     }
   }
-};
+}

@@ -1,7 +1,7 @@
 import { useEffect, useRef } from 'react';
 
-import Parallax from '@/libs/Parallax';
-import CameraControl from '@/libs/CameraControl';
+import Parallax from './Parallax';
+import CameraControl from './Parallax/CameraControl';
 
 export default (props) => {
   const { width, height, depth } = props;
