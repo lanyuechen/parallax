@@ -1,33 +1,31 @@
+import { Plane } from '@react-three/drei';
+
 export default (props) => {
   const { width, height, depth } = props;
+  const wireframe = false;
 
   return (
     <>
       {/* left */}
-      <mesh rotation={[0, Math.PI / 2, 0]} position={[-width / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[depth, height]} />
-        <meshStandardMaterial />
-      </mesh>
+      <Plane args={[depth, height]} rotation={[0, Math.PI / 2, 0]} position={[-width / 2, 0, -depth / 2]} receiveShadow>
+        <meshPhongMaterial wireframe={wireframe} />
+      </Plane>
       {/* right */}
-      <mesh rotation={[0, -Math.PI / 2, 0]} position={[width / 2, 0, 0]} receiveShadow>
-        <planeGeometry args={[depth, height]} />
-        <meshStandardMaterial />
-      </mesh>
+      <Plane args={[depth, height]} rotation={[0, -Math.PI / 2, 0]} position={[width / 2, 0, -depth / 2]} receiveShadow>
+        <meshPhongMaterial wireframe={wireframe} />
+      </Plane>
       {/* front */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, height / 2, 0]} receiveShadow>
-        <planeGeometry args={[width, depth]} />
-        <meshStandardMaterial />
-      </mesh>
+      <Plane args={[width, depth]} rotation={[Math.PI / 2, 0, 0]} position={[0, height / 2, -depth / 2]} receiveShadow>
+        <meshPhongMaterial wireframe={wireframe} />
+      </Plane>
       {/* back */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -height / 2, 0]} receiveShadow>
-        <planeGeometry args={[width, depth]} />
-        <meshStandardMaterial />
-      </mesh>
+      <Plane args={[width, depth]} rotation={[-Math.PI / 2, 0, 0]} position={[0, -height / 2, -depth / 2]} receiveShadow>
+        <meshPhongMaterial wireframe={wireframe} />
+      </Plane>
       {/* bottom */}
-      <mesh position={[0, 0, -depth / 2]} receiveShadow>
-        <planeGeometry args={[width, height]} />
-        <meshStandardMaterial />
-      </mesh>
+      <Plane args={[width, height]} position={[0, 0, -depth]} receiveShadow>
+        <meshPhongMaterial wireframe={wireframe} />
+      </Plane>
     </>
   );
 }

@@ -19,7 +19,7 @@ export default (props) => {
   });
 
   return (
-    <Canvas camera={camera}>
+    <Canvas camera={camera} shadows>
       <CameraView>
         {children}
       </CameraView>
